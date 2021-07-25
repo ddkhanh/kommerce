@@ -1,7 +1,16 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build"
+  },
   "devDependencies": {
     "lerna": "^4.0.0"
-  }
+  },
+  "workspaces": [
+    "libs/*",
+    "services/*",
+    "frontends/*"
+  ]
 }

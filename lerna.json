@@ -1,6 +1,16 @@
 {
-  "packages": [
-    "packages/*"
+  "npmClient": "yarn",
+  "packages": [    
+    "libs/*",
+    "services/*",
+    "frontends/*"
   ],
-  "version": "independent"
+  "useWorkspaces": true,
+  "version": "1.0.0",
+  "command": {
+    "version": {
+      "allowBranch": "master",
+      "message": "chore(release): publish %s"
+    }
+  }
 }

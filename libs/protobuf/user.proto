@@ -1,0 +1,29 @@
+// hero/hero.proto
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc getUser (UserId) returns (User) {}  
+  rpc searchUsers (SearchRequest) returns (Users) {}
+}
+
+message UserId {
+  string id = 1;
+}
+
+message SearchRequest {
+  string query = 1;
+  int32 page = 2;
+  int32 limit = 3;
+}
+
+message Users {
+  repeated User users = 1;
+  int32 total = 2;
+}
+
+message User {
+  int32 id = 1;
+  string name = 2;
+}
