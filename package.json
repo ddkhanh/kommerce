@@ -9,7 +9,7 @@
     "lerna": "^4.0.0"
   },
   "workspaces": [
-    "libs/*",
+    "shared/*",
     "services/*",
     "frontends/*"
   ]
