@@ -7,9 +7,6 @@
   "license": "UNLICENSED",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "files": [
-    "lib/**/*"
-  ],
   "publishConfig": {
     "access": "public"
   },
@@ -17,7 +14,7 @@
     "prebuild": "rimraf lib & yarn gen",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "gen": "proto-loader-gen-types -I=../protobuf --longs=String --enums=String --defaults --oneofs --grpcLib=@grpc/grpc-js --outDir=src/ user.proto",
+    "gen": "proto-loader-gen-types -I=src/protobuf --longs=String --enums=String --defaults --oneofs --grpcLib=@grpc/grpc-js --outDir=src/proto user.proto",
     "start": "nest start",
     "start:dev": "nest build & nest start --watch",
     "start:debug": "nest start --debug --watch",

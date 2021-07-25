@@ -1,4 +1,4 @@
-// Original file: ..\protobuf\user.proto
+// Original file: src\protobuf\user.proto
 
 
 export interface SearchRequest {

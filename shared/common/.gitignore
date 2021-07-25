@@ -1,0 +1,4 @@
+.env
+lerna-debug.log
+dist
+lib

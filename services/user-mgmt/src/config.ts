@@ -5,13 +5,13 @@ import { Address } from "./user/entities/address.entity"
 import { Operator } from "./user/entities/operator.entity"
 import { Profile } from "./user/entities/profile.entity"
 import { User } from "./user/entities/user.entity"
-import {PROTO_PATH} from '@lib/schema';
+import { PROTOBUF_PATH } from '@lib/common';
 
 export const apiOptions: ApiOptions = {
     hostname: process.env.HOSTNAME || 'localhost',
-    port: parseInt(process.env.PORT || "50051"),
+    port: parseInt(process.env.PORT || "5000"),
     package: 'user',
-    schemaPath: PROTO_PATH + "/user.proto"
+    schemaPath: PROTOBUF_PATH + "/user.proto"
 }
 
 export const dbOptions: TypeOrmModuleOptions = {

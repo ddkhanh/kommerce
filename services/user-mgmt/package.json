@@ -8,8 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "gen": "proto-loader-gen-types -I=./dist/schema --longs=String --enums=String --defaults --oneofs --grpcLib=@grpc/grpc-js --outDir=src/proto/ user.proto",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",    
     "start": "nest start",
     "start:dev": "nest build & nest start --watch",
     "start:debug": "nest start --debug --watch",
