@@ -16,7 +16,7 @@ COPY services/user-mgmt/package.json ./services/user-mgmt/
 RUN yarn workspace @lib/common install --production --no-optional --frozen-lockfile --ignore-optional && \
 yarn workspace @service/user-mgmt install --production --no-optional --frozen-lockfile --ignore-optional
 COPY --from=builder /app/shared/common/lib ./shared/common/lib
-COPY --from=bubuilderild /app/services/user-mgmt/dist/ ./services/user-mgmt/dist
+COPY --from=builder /app/services/user-mgmt/dist/ ./services/user-mgmt/dist
 
 EXPOSE 5000
 
