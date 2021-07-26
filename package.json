@@ -12,5 +12,8 @@
     "shared/*",
     "services/*",
     "frontends/*"
-  ]
+  ],
+  "dependencies": {
+    "trim-newlines": "4.0.2"
+  }
 }
