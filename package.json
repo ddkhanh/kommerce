@@ -10,8 +10,9 @@
   },
   "workspaces": [
     "shared/*",
-    "services/*",
-    "frontends/*"
+    "service/*",
+    "web/*",
+    "api/*"
   ],
   "dependencies": {
     "meow": "10.1.0",
