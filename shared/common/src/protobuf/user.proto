@@ -4,26 +4,74 @@ syntax = "proto3";
 package user;
 
 service UserService {
-  rpc getUser (UserId) returns (User) {}  
-  rpc searchUsers (SearchRequest) returns (Users) {}
+  rpc getUser (UserId) returns (UserDto) {}  
+  rpc createUser (UserDto) returns (UserDto) {}  
+  rpc updateUser (UserDto) returns (UserDto) {}
+  rpc searchUsers (SearchRequest) returns (UserListDto) {}
 }
 
 message UserId {
-  string id = 1;
+  required int32 id = 1;
+}
+
+message QueryDto {
+  required string name=1;
+  required string value = 2;
+  enum method {
+    eq = 0; //equals
+    gt = 1; //greater than
+    lt = 2; //less than
+    ne = 3; //not equals
+    in = 4; //in
+    sw = 5; //starts with
+    ew = 6; //ends with
+    ct = 7; //contains
+    regex = 8; // reqgular expression
+  }
 }
 
 message SearchRequest {
-  string query = 1;
-  int32 page = 2;
-  int32 limit = 3;
+  repeated QueryDto queries=1;
+  optional bool or = 2;
+  required int32 page = 3;
+  required int32 limit = 4;
 }
 
-message Users {
-  repeated User users = 1;
-  int32 total = 2;
+message UserListDto {
+  repeated UserDto users = 1;
+  required int32 total = 2;
 }
 
-message User {
+message UserDto {
   int32 id = 1;
-  string name = 2;
+  string userName = 2;
+  string password = 3;
+  optional int32 orgId = 4;
+  required ProfileDto profile=5;
+  repeated AddressDto addresses=6;
+}
+
+message AddressDto {
+  int32 id=1;
+  required string street=2;
+  required string ward=3;
+  required string district=4;
+  required string city=5;
+  required string state=6;
+  required string country=7;
+}
+
+message ProfileDto {
+  int32 id=1;
+  required string firstName=2;
+  required string lastName=3;
+  optional string phone=4;
+  optional string gender=5;
+  optional string photo=6;
+  optional int64 dateOfBirth=7;
+}
+
+message OperatorDto {
+  required UserDto user=1;
+  repeated int32 orgsManagement=2;
 }

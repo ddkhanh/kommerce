@@ -1,10 +1,10 @@
-// Original file: src\protobuf\user.proto
+// Original file: src/protobuf/user.proto
 
 
 export interface UserId {
-  'id'?: (string);
+  'id'?: (number);
 }
 
 export interface UserId__Output {
-  'id': (string);
+  'id'?: (number);
 }
