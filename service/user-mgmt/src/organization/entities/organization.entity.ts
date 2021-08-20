@@ -1,10 +1,10 @@
 
 import { User } from "../../user/entities/user.entity";
 import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
-import { DBEntity } from "../../entities/generic.entity";
+import { Kentity } from "../../entities/generic.entity";
 
 @Entity()
-export class Organization extends DBEntity{
+export class Organization extends Kentity{
     @Column()
     name: string;
     @Column()

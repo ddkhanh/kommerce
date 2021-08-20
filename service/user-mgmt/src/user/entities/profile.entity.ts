@@ -1,6 +1,6 @@
 
 import { Column, Entity } from "typeorm";
-import { DBEntity } from "../../entities/generic.entity";
+import { Kentity } from "../../entities/generic.entity";
 
 export enum Gender {
     FEMALE = "female",
@@ -9,7 +9,7 @@ export enum Gender {
 }
 
 @Entity()
-export class Profile extends DBEntity {
+export class Profile extends Kentity {
     @Column()
     firstName: string;
 

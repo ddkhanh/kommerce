@@ -1,7 +1,7 @@
 
 import {PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, VersionColumn } from "typeorm";
 
-export abstract class DBEntity {
+export abstract class Kentity {
     @PrimaryGeneratedColumn()
     id: number;
 

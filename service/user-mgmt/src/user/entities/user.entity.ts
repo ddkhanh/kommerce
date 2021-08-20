@@ -1,12 +1,12 @@
 
 import { Organization } from "../../organization/entities/organization.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
-import { DBEntity } from "../../entities/generic.entity";
+import { Kentity } from "../../entities/generic.entity";
 import { Address } from "./address.entity";
 import { Profile } from "./profile.entity";
 
 @Entity()
-export class User extends DBEntity {
+export class User extends Kentity {
     @Column()
     userName: string;
     
