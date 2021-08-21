@@ -1,22 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProfileDto } from './transformer/create-profile.dto';
-import { UpdateProfileDto } from './transformer/update-profile.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CrudService } from 'src/service/crud.service';
+import { Profile } from './schema/profile.schema';
 
 @Injectable()
-export class ProfileService {
-  create(createProfileDto: CreateProfileDto) {
+export class ProfileService extends CrudService<Profile> {
+
+  constructor(
+    @InjectModel(Profile.name) private readonly profileModel: Model<Profile>
+  ){
+    super(profileModel);
+  }
+  
+  protected getUniqueKey<K extends keyof Profile>(): K {
+    return "id" as K;
+  }
+
+  create() {
     return 'This action adds a new profile';
   }
 
-  findAll() {
-    return `This action returns all profile`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} profile`;
-  }
-
-  update(id: number, updateProfileDto: UpdateProfileDto) {
+  update(id: number) {
     return `This action updates a #${id} profile`;
   }
 
