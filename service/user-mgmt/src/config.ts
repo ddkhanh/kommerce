@@ -1,11 +1,19 @@
-import { TypeOrmModuleOptions } from "@nestjs/typeorm"
-import { ApiOptions } from "./option/api.option"
-import { Organization } from "./organization/entities/organization.entity"
-import { Address } from "./user/entities/address.entity"
-import { Operator } from "./user/entities/operator.entity"
-import { Profile } from "./user/entities/profile.entity"
-import { User } from "./user/entities/user.entity"
 import { PROTOBUF_PATH } from '@kommerce/common';
+import { MongooseModuleOptions } from "@nestjs/mongoose";
+import { ApiOptions } from "./option/api.option";
+
+const mongoUri = ():string => {
+    //mongodb://username:password@host:port/database
+    let username = process.env.DB_USERNAME || 'root'
+    let password = encodeURI(process.env.DB_PASSWORD || '123456')
+    let dbHost = process.env.DB_HOST || 'mongo'
+    let dbPort = process.env.DB_PORT || '27017'
+    let dbName = process.env.DB_NAME || 'user'
+    let uri = `mongodb://${username}:${password}@${dbHost}:${dbPort}/${dbName}`;
+    console.log("MongoUri", uri);
+    return uri;
+
+}
 
 export const apiOptions: ApiOptions = {
     hostname: process.env.HOSTNAME || 'localhost',
@@ -14,14 +22,9 @@ export const apiOptions: ApiOptions = {
     schemaPath: PROTOBUF_PATH + "/user.proto"
 }
 
-export const dbOptions: TypeOrmModuleOptions = {
-    type: 'mysql',
-    host: process.env.DB_HOST || "192.168.56.101",
-    port: parseInt(process.env.DB_PORT || "3306"),
-    username: process.env.DB_USERNAME || 'root',
-    password: process.env.DB_PASSWORD || '123456',
-    database: process.env.DB_DBNAME || 'user',
-    synchronize: true,
-    entities: [Profile, Address, Organization, User, Operator]
+export const dbOptions: {uri: string, options: MongooseModuleOptions} = {
+    uri: mongoUri(),
+    options: {
+        authSource: "admin"
+    }
 }
-

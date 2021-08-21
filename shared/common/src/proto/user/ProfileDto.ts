@@ -3,7 +3,7 @@
 import type { Long } from '@grpc/proto-loader';
 
 export interface ProfileDto {
-  'id'?: (number);
+  'id'?: (string);
   'firstName'?: (string);
   'lastName'?: (string);
   'phone'?: (string);
@@ -17,7 +17,7 @@ export interface ProfileDto {
 }
 
 export interface ProfileDto__Output {
-  'id'?: (number);
+  'id'?: (string);
   'firstName'?: (string);
   'lastName'?: (string);
   'phone'?: (string);

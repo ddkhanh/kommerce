@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",    
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest build & nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -28,15 +28,14 @@
     "@nestjs/core": "8.0.4",
     "@nestjs/mapped-types": "^1.0.0",
     "@nestjs/microservices": "8.0.4",
+    "@nestjs/mongoose": "^8.0.1",
     "@nestjs/platform-express": "8.0.4",
-    "@nestjs/typeorm": "^8.0.1",
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
-    "mysql2": "^2.2.5",
+    "mongoose": "^5.13.7",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
-    "rxjs": "7.2.0",
-    "typeorm": "^0.2.34"
+    "rxjs": "7.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "8.0.2",

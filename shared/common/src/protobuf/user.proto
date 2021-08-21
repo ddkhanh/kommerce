@@ -11,7 +11,7 @@ service UserService {
 }
 
 message UserId {
-  required int32 id = 1;
+  required string id = 1;
 }
 
 message QueryDto {
@@ -43,16 +43,16 @@ message UserListDto {
 }
 
 message UserDto {
-  int32 id = 1;
+  string id = 1;
   string userName = 2;
   string password = 3;
-  optional int32 orgId = 4;
+  optional string orgId = 4;
   required ProfileDto profile=5;
   repeated AddressDto addresses=6;
 }
 
 message AddressDto {
-  int32 id=1;
+  string id=1;
   required string street=2;
   required string ward=3;
   required string district=4;
@@ -62,7 +62,7 @@ message AddressDto {
 }
 
 message ProfileDto {
-  int32 id=1;
+  string id=1;
   required string firstName=2;
   required string lastName=3;
   optional string phone=4;
@@ -73,5 +73,5 @@ message ProfileDto {
 
 message OperatorDto {
   required UserDto user=1;
-  repeated int32 orgsManagement=2;
+  repeated string orgsManagement=2;
 }

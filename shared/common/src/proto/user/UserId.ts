@@ -2,9 +2,9 @@
 
 
 export interface UserId {
-  'id'?: (number);
+  'id'?: (string);
 }
 
 export interface UserId__Output {
-  'id'?: (number);
+  'id'?: (string);
 }
