@@ -8,9 +8,13 @@ import { User } from './schema/user.schema';
 export class UsersService extends CrudService<User>{
   constructor(
     @InjectModel(User.name)
-    private userModel: Model<User>
+    userModel: Model<User>
   ) {
     super(userModel);
+  }
+
+  public async findByUserName(userName: string): Promise<User | null> {
+    return await this.model.findOne({userName: userName}).exec()
   }
 
   protected getUniqueKey<K extends keyof User>(): K {

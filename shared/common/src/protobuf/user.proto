@@ -4,10 +4,10 @@ syntax = "proto3";
 package user;
 
 service UserService {
-  rpc getUser (UserId) returns (UserDto) {}  
-  rpc createUser (UserDto) returns (UserDto) {}  
-  rpc updateUser (UserDto) returns (UserDto) {}
-  rpc searchUsers (SearchRequest) returns (UserListDto) {}
+  rpc getUser (UserId) returns (UserResponse) {}  
+  rpc createUser (CreateUserDto) returns (UserResponse) {}  
+  rpc updateUser (CreateUserDto) returns (UserResponse) {}
+  rpc searchUsers (SearchUserDto) returns (UserListDto) {}
 }
 
 message UserId {
@@ -30,7 +30,7 @@ message QueryDto {
   }
 }
 
-message SearchRequest {
+message SearchUserDto {
   repeated QueryDto queries=1;
   optional bool or = 2;
   required int32 page = 3;
@@ -42,6 +42,16 @@ message UserListDto {
   required int32 total = 2;
 }
 
+message UserResponse {
+  UserDto result = 1;
+  ErrorResponse error = 2;
+}
+
+message ErrorResponse {
+  string message=1;
+  int32 errorCode=2;
+}
+
 message UserDto {
   string id = 1;
   string userName = 2;
@@ -51,27 +61,33 @@ message UserDto {
   repeated AddressDto addresses=6;
 }
 
+message CreateUserDto {
+  string userName = 1;
+  string password = 2;
+  optional string orgId = 3;
+  required ProfileDto profile=4;
+  repeated AddressDto addresses=5;
+}
+
 message AddressDto {
-  string id=1;
-  required string street=2;
-  required string ward=3;
-  required string district=4;
-  required string city=5;
-  required string state=6;
-  required string country=7;
+  required string street=1;
+  required string ward=2;
+  required string district=3;
+  required string city=4;
+  required string state=5;
+  required string country=6;
 }
 
 message ProfileDto {
-  string id=1;
-  required string firstName=2;
-  required string lastName=3;
-  optional string phone=4;
-  optional string gender=5;
-  optional string photo=6;
-  optional int64 dateOfBirth=7;
+  required string firstName=1;
+  required string lastName=2;
+  optional string phone=3;
+  optional string gender=4;
+  optional string photo=5;
+  optional int64 dateOfBirth=6;
 }
 
 message OperatorDto {
-  required UserDto user=1;
+  required CreateUserDto user=1;
   repeated string orgsManagement=2;
 }

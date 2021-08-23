@@ -2,7 +2,7 @@
 
 import type { QueryDto as _user_QueryDto, QueryDto__Output as _user_QueryDto__Output } from '../user/QueryDto';
 
-export interface SearchRequest {
+export interface SearchUserDto {
   'queries'?: (_user_QueryDto)[];
   'or'?: (boolean);
   'page'?: (number);
@@ -10,7 +10,7 @@ export interface SearchRequest {
   '_or'?: "or";
 }
 
-export interface SearchRequest__Output {
+export interface SearchUserDto__Output {
   'queries'?: (_user_QueryDto__Output)[];
   'or'?: (boolean);
   'page'?: (number);

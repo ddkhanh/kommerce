@@ -14,10 +14,10 @@ import { User } from "./user.schema";
 })
 export class Operator extends Document {
     
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
     user: User
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Organization' }] })
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Organization.name }] })
     orgsManagement: Organization[]
 }
 

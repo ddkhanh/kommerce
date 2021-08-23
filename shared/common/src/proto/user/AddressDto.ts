@@ -2,7 +2,6 @@
 
 
 export interface AddressDto {
-  'id'?: (string);
   'street'?: (string);
   'ward'?: (string);
   'district'?: (string);
@@ -12,7 +11,6 @@ export interface AddressDto {
 }
 
 export interface AddressDto__Output {
-  'id'?: (string);
   'street'?: (string);
   'ward'?: (string);
   'district'?: (string);
