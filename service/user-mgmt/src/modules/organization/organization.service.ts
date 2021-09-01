@@ -7,8 +7,12 @@ import { Organization } from './schema/organization.schema';
 @Injectable()
 export class OrganizationService extends CrudService<Organization>{
 
-  constructor(@InjectModel(Organization.name) private readonly orgModel: Model<Organization>) {
+  constructor(@InjectModel(Organization.name) orgModel: Model<Organization>) {
     super(orgModel);
+  }
+
+  public async findOrgByName(name: string): Promise<Organization | null> {
+    return await this.model.findOne({name: name}).exec();
   }
 
   protected getUniqueKey<K extends keyof Organization>(): K {

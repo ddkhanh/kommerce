@@ -16,8 +16,4 @@ export class UsersService extends CrudService<User>{
   public async findByUserName(userName: string): Promise<User | null> {
     return await this.model.findOne({userName: userName}).exec()
   }
-
-  protected getUniqueKey<K extends keyof User>(): K {
-    return "userName" as K;
-  }
 }

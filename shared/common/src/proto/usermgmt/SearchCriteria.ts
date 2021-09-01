@@ -3,7 +3,7 @@
 
 // Original file: src/protobuf/user.proto
 
-export enum _user_QueryDto_method {
+export enum _usermgmt_SearchCriteria_method {
   eq = 0,
   gt = 1,
   lt = 2,
@@ -15,12 +15,12 @@ export enum _user_QueryDto_method {
   regex = 8,
 }
 
-export interface QueryDto {
+export interface SearchCriteria {
   'name'?: (string);
   'value'?: (string);
 }
 
-export interface QueryDto__Output {
+export interface SearchCriteria__Output {
   'name'?: (string);
   'value'?: (string);
 }

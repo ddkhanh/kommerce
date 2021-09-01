@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
 export interface Transformer<F extends Document, T> {
-    fromDto(dto: T): F
-    toDto(doc: F): T
+    from(dto: T): F
+    to(doc: F): T
 }

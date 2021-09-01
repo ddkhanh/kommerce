@@ -33,5 +33,5 @@ services:
             DB_NAME: user
             DB_PASSWORD: 123456
             DB_USERNAME: root
-            DB_HOST: localhost
+            DB_HOST: mongo
             DB_PORT: 27017

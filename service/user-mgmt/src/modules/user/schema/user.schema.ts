@@ -24,12 +24,18 @@ export class User extends Document {
     profile: Profile;
 
     @Prop({ type: [{ type: AddressSchema }] })
-    addresss: Address[];
+    addresses: Address[];
 
     @Prop({ type: [{ type: mongoose.Schema.Types.String }] })
     permissions: string[];
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Organization.name })
     organization: Organization;
+
+    /** To be injected by mongoose */
+    createdAt: Date;
+
+    /** To be injected by mongoose */
+    updatedAt: Date;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

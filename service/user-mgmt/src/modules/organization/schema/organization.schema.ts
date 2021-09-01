@@ -5,20 +5,25 @@ import * as mongoose from 'mongoose';
 
 @Schema({
     autoCreate: true,
-    collection: Organization.NAME,
+    collection: Organization.name,
     timestamps: {
         currentTime: () => Math.floor(Date.now() / 1000)
     }
 })
 export class Organization extends Document {
-    public static readonly NAME: string = "profile";
     @Prop()
     name: string;
     @Prop()
     description: string;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Organization' })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Organization.name })
     uperOrg: Organization;
+
+    /** To be injected by mongoose */
+    createdAt: Date;
+
+    /** To be injected by mongoose */
+    updatedAt: Date;
 }
 
 export const OrganizationSchema = SchemaFactory.createForClass(Organization);

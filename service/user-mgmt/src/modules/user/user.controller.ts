@@ -1,62 +1,97 @@
-import { CreateUserDto, SearchUserDto, UserDto, UserId, UserListDto, UserResponse } from '@kommerce/common';
+import { ObjectId, SearchRequest, UserListResponse, UserOrgRequest, UserRequest, UserResponse } from '@kommerce/common';
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
-import { Types } from 'mongoose';
-import { UserTransformer } from './transformer/user.transformer';
+import * as Errors from '../../types/error';
+import { OrganizationService } from '../organization/organization.service';
+import { ValidationUtil } from '../../util/validation.util';
 import { User } from './schema/user.schema';
+import { UserRequestTransformer } from './transformer/user-request.transformer';
+import { UserTransformer } from './transformer/user.transformer';
 import { UsersService } from './user.service';
-import { CreateUserTransformer } from './transformer/createuser.transformer';
 
 @Controller()
 export class UserController {
   constructor(
     private readonly usersService: UsersService,
     private readonly userTrans: UserTransformer,
-    private readonly createuserTrans: CreateUserTransformer,
+    private readonly userRequestTrans: UserRequestTransformer,
+    private readonly orgService: OrganizationService
   ) { }
 
-  @GrpcMethod('UserService', 'getUser')
-  public async getUser(userId: UserId): Promise<UserResponse> {
-    if (!userId.id || !Types.ObjectId.isValid(userId.id)) {
-      return <UserResponse>{
-        error: {
-          message: 'Invalid user id',
-          errorCode: 400
-        }
-      }
+  @GrpcMethod('UserService', 'findUserById')
+  public async findUserById(data: ObjectId): Promise<UserResponse> {
+    if (!ValidationUtil.isValidObjectId(data.id)) {
+      throw Errors.InvalidIdException();
     }
-    let user;
-    if (userId.id) {
-      user = await this.usersService.findOne(userId.id)
+    let user = null; 
+    if(data.id) {
+      user = await this.usersService.findById(data.id)
     }
-    return <UserResponse>{
-      result: this.userTrans.toDto(user as User)
+    if(!user) {
+      throw Errors.NotFoundException(`User ${data.id} do not existing`)
     }
+    return this.userTrans.to(user);
   }
 
   @GrpcMethod('UserService', 'searchUsers')
-  public async searchUsers(searches: SearchUserDto): Promise<UserListDto> {
-    let users = await this.usersService.findAll()
-    return <UserListDto>{
+  public async searchUsers(searches: SearchRequest): Promise<UserListResponse> {
+    let filter:any = {};
+    searches.criterias?.forEach(q => {
+      if(q.name) {
+        filter[q.name] = q.value
+      }
+    })
+    let users = await this.usersService.findBy(filter);
+    return <UserListResponse>{
       total: users.length,
-      users: users.map(e => this.userTrans.toDto(e))
+      users: users.map(e => this.userTrans.to(e))
     };
   }
 
   @GrpcMethod('UserService', 'createUser')
-  public async createUser(usr: CreateUserDto): Promise<UserResponse> {
-    let user: User = this.createuserTrans.fromDto(usr);
-    if (this.usersService.findByUserName(user.userName)) {
-      return <UserResponse>{
-        error: {
-          message: `The user ${user.userName} is already existed!`,
-          errorCode: 409
-        }
-      }
+  public async createUser(usr: UserRequest): Promise<UserResponse> {
+    let user: User = this.userRequestTrans.from(usr);
+    let dbUser = await this.usersService.findByUserName(user.userName);
+    if (dbUser) {      
+      throw Errors.AlreadyExistsException(`The user ${user.userName} is already existed!`)
     }
-    let created = await this.usersService.createOrUpdate(user);
-    return <UserResponse>{
-      result: this.createuserTrans.toDto(created)
-    }
+    let created = await this.usersService.create(user);
+    return this.userTrans.to(created)
   }
+
+
+  @GrpcMethod('UserService', 'updateUser')
+  public async updateUser(usr: UserResponse): Promise<UserResponse> {
+    let user: User = this.userRequestTrans.from(usr);
+    let created = await this.usersService.update(user);
+    if (!created) {      
+      throw Errors.NotFoundException(`User id ${user.id} is not existed`)
+    }
+    return this.userTrans.to(created)
+  }
+
+
+  @GrpcMethod('UserService', 'addUserToOrg')
+  public async updateUserOrg(usrOrg: UserOrgRequest): Promise<UserResponse> {
+    if(!ValidationUtil.isValidObjectId(usrOrg.orgId) || !ValidationUtil.isValidObjectId(usrOrg.userId)) {
+      throw Errors.InvalidIdException()
+    }
+    let org = null;
+    if(usrOrg.orgId) {
+      org = await this.orgService.findById(usrOrg.orgId)
+    }
+    if(!org) {
+      throw Errors.NotFoundException(`Organization ${usrOrg.orgId} do not existing`)
+    }
+    let user = <User> {
+      id: usrOrg.userId,
+      organization: org
+    }
+    let saved = await this.usersService.update(user);
+    if (!saved) {
+      throw Errors.NotFoundException(`User ${usrOrg.userId} do not existing`)
+    }
+    return this.userTrans.to(saved);
+  }
+
 }

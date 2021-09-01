@@ -1,11 +1,11 @@
-import { AddressDto } from '@kommerce/common';
+import { UserAddress } from '@kommerce/common';
 import { Injectable } from '@nestjs/common';
 import { Transformer } from '../../../transformer/tranformer';
 import { Address } from '../schema/address.schema';
 
 @Injectable()
-export class AddressTransformer implements Transformer<Address, AddressDto>  {
-    fromDto(a: AddressDto): Address {
+export class AddressTransformer implements Transformer<Address, UserAddress>  {
+    from(a: UserAddress): Address {
         return <Address> {
             city: a.city,
             state: a.state,
@@ -14,8 +14,8 @@ export class AddressTransformer implements Transformer<Address, AddressDto>  {
             district: a.district
         };
     }
-    toDto(addr: Address): AddressDto {
-        return <AddressDto> {
+    to(addr: Address): UserAddress {
+        return <UserAddress> {
             id: addr.id.toString(),
             city: addr.city,
             country: addr.city,

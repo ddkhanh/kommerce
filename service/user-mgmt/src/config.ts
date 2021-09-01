@@ -18,7 +18,7 @@ const mongoUri = ():string => {
 export const apiOptions: ApiOptions = {
     hostname: process.env.HOSTNAME || 'localhost',
     port: parseInt(process.env.PORT || "5000"),
-    package: 'user',
+    package: 'usermgmt',
     schemaPath: PROTOBUF_PATH + "/user.proto"
 }
 

@@ -1,13 +1,11 @@
-import { AddressDto, ProfileDto, UserDto } from '@kommerce/common';
-import { Address } from '../schema/address.schema';
-import { Profile } from '../schema/profile.schema';
-import { User } from '../schema/user.schema';
-import { Transformer } from '../../../transformer/tranformer';
+import { UserProfile } from '@kommerce/common';
 import { Injectable } from '@nestjs/common';
+import { Transformer } from '../../../transformer/tranformer';
+import { Profile } from '../schema/profile.schema';
 
 @Injectable()
-export class ProfileTransformer implements Transformer<Profile, ProfileDto> {
-    fromDto(p: ProfileDto): Profile {
+export class ProfileTransformer implements Transformer<Profile, UserProfile> {
+    from(p: UserProfile): Profile {
         return <Profile> {
             lastName: p.lastName,
             firstName: p.firstName,
@@ -16,8 +14,8 @@ export class ProfileTransformer implements Transformer<Profile, ProfileDto> {
             photo: p.photo
        };
     }
-    toDto(p: Profile): ProfileDto {
-        return <ProfileDto> {
+    to(p: Profile): UserProfile {
+        return <UserProfile> {
             gender: p.gender,
             phone: p.phone,
             firstName: p.firstName,

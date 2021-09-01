@@ -2,28 +2,20 @@
 
 import type { Long } from '@grpc/proto-loader';
 
-export interface ProfileDto {
+export interface UserProfile {
   'firstName'?: (string);
   'lastName'?: (string);
   'phone'?: (string);
   'gender'?: (string);
   'photo'?: (string);
   'dateOfBirth'?: (number | string | Long);
-  '_phone'?: "phone";
-  '_gender'?: "gender";
-  '_photo'?: "photo";
-  '_dateOfBirth'?: "dateOfBirth";
 }
 
-export interface ProfileDto__Output {
+export interface UserProfile__Output {
   'firstName'?: (string);
   'lastName'?: (string);
   'phone'?: (string);
   'gender'?: (string);
   'photo'?: (string);
   'dateOfBirth'?: (string);
-  '_phone': "phone";
-  '_gender': "gender";
-  '_photo': "photo";
-  '_dateOfBirth': "dateOfBirth";
 }

@@ -1,33 +1,55 @@
-import { UserDto } from '@kommerce/common';
+import { UserResponse } from '@kommerce/common';
 import { Injectable } from '@nestjs/common';
-import { AddressTransformer } from './address.transformer';
-import { ProfileTransformer } from './profile.transformer';
 import { Transformer } from '../../../transformer/tranformer';
 import { User } from '../schema/user.schema';
+import { AddressTransformer } from './address.transformer';
+import { ProfileTransformer } from './profile.transformer';
 
 @Injectable()
-export class UserTransformer implements Transformer<User, UserDto>  {
+export class UserTransformer implements Transformer<User, UserResponse>  {
     constructor(
         private readonly profileTrans: ProfileTransformer,
         private readonly addressTrans: AddressTransformer,
     ) {
     }
-    fromDto(u: UserDto): User {
-        return <User>{
-            _id: u.id,
+    from(u: UserResponse): User {       
+        let user = <User>{
             userName: u.userName,
             password: u.password,
-            addresss: u?.addresses?.map(e => this.addressTrans.fromDto(e)),
-            profile: u.profile ? this.profileTrans.fromDto(u.profile) : null
         }
+        if(u.id) {
+            user._id = u.id;
+            user.id = u.id;
+        }
+        if(u.orgId) {
+            // userRespone.orgId = u.organization.id
+        }
+        if(u.profile) {
+            user.profile = this.profileTrans.from(u.profile)
+        }
+        if(u.addresses?.length) {
+            user.addresses = u.addresses.map(e => this.addressTrans.from(e))
+        }
+        return user;
     }
-    toDto(u: User): UserDto {      
-        return <UserDto>{
+    to(u: User): UserResponse {      
+        let userRespone = <UserResponse>{
+            id: u._id.toString(),
             userName: u.userName,
-            orgId: u.organization?.id?.toString(),
-            id: u.id?.toString(),
-            profile: this.profileTrans.toDto(u.profile),
-            addresses: u?.addresss.map(e => this.addressTrans.toDto(e))
+            password: u.password.replace(/./g, '*'),
+            createdAt: u.createdAt.getTime(),
+            updatedAt: u.updatedAt.getTime()
         };
+        
+        if(u.organization) {
+            userRespone.orgId = u.organization._id.toString()
+        }
+        if(u.profile) {
+            userRespone.profile = this.profileTrans.to(u.profile)
+        }
+        if(u.addresses?.length) {
+            userRespone.addresses = u.addresses.map(e => this.addressTrans.to(e))
+        }
+        return userRespone;
     }    
 }

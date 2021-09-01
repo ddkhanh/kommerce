@@ -7,14 +7,16 @@ import { User, UserSchema } from './schema/user.schema';
 import { UserTransformer } from './transformer/user.transformer';
 import { UserController } from './user.controller';
 import { UsersService } from './user.service';
-import { CreateUserTransformer } from './transformer/createuser.transformer';
+import { UserRequestTransformer } from './transformer/user-request.transformer';
+import { OrganizationService } from '../organization/organization.service';
+import { OrganizationModule } from '../organization/organization.module';
 
 @Module({
   imports: [MongooseModule.forFeature([
     { name: User.name, schema: UserSchema },
     { name: Operator.name, schema: OperatorSchema },
-  ])],  
+  ]), OrganizationModule],  
   controllers: [UserController],
-  providers: [UsersService, UserTransformer, AddressTransformer, ProfileTransformer, CreateUserTransformer]
+  providers: [UsersService, UserTransformer, AddressTransformer, ProfileTransformer, UserRequestTransformer]
 })
 export class UserModule {}

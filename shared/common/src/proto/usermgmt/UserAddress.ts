@@ -1,7 +1,7 @@
 // Original file: src/protobuf/user.proto
 
 
-export interface AddressDto {
+export interface UserAddress {
   'street'?: (string);
   'ward'?: (string);
   'district'?: (string);
@@ -10,7 +10,7 @@ export interface AddressDto {
   'country'?: (string);
 }
 
-export interface AddressDto__Output {
+export interface UserAddress__Output {
   'street'?: (string);
   'ward'?: (string);
   'district'?: (string);

@@ -1,22 +1,57 @@
 // hero/hero.proto
 syntax = "proto3";
 
-package user;
+package usermgmt;
 
 service UserService {
-  rpc getUser (UserId) returns (UserResponse) {}  
-  rpc createUser (CreateUserDto) returns (UserResponse) {}  
-  rpc updateUser (CreateUserDto) returns (UserResponse) {}
-  rpc searchUsers (SearchUserDto) returns (UserListDto) {}
+  rpc findUserById (ObjectId) returns (UserResponse) {}    
+  rpc createUser (UserRequest) returns (UserResponse) {}  
+  rpc updateUser (UserResponse) returns (UserResponse) {}
+  rpc searchUsers (SearchRequest) returns (UserListResponse) {}
+  rpc addUserToOrg (UserOrgRequest) returns (UserResponse) {}
 }
 
-message UserId {
-  required string id = 1;
+
+service OrganizationService {
+  rpc findOrgById (ObjectId) returns (OrganizationResponse) {}    
+  rpc createOrg (OrganizationRequest) returns (OrganizationResponse) {}  
+  rpc updateOrg (OrganizationResponse) returns (OrganizationResponse) {}
+  rpc searchOrgs (SearchRequest) returns (OrganizatioListResponse) {}  
 }
 
-message QueryDto {
-  required string name=1;
-  required string value = 2;
+
+message ObjectId {
+  string id = 1;
+}
+
+message OrganizationResponse {
+  string id=1;
+  string name=2;
+  string description=3;
+  string uperOrgId=4;
+  int64 createdAt=5;
+  int64 updatedAt=6;
+}
+
+message OrganizationRequest {
+  string name=1;
+  string description=2;
+  string uperOrgId=3;
+}
+
+message OrganizatioListResponse {
+  repeated OrganizationResponse orgs = 1;
+  int32 total = 2;
+}
+
+message UserOrgRequest {
+  string orgId = 1;
+  string userId = 2;
+}
+
+message SearchCriteria {
+  string name=1;
+  string value = 2;
   enum method {
     eq = 0; //equals
     gt = 1; //greater than
@@ -30,64 +65,56 @@ message QueryDto {
   }
 }
 
-message SearchUserDto {
-  repeated QueryDto queries=1;
-  optional bool or = 2;
-  required int32 page = 3;
-  required int32 limit = 4;
+message SearchRequest {
+  repeated SearchCriteria criterias=1;
+  bool or = 2;
+  int32 page = 3;
+  int32 limit = 4;
 }
 
-message UserListDto {
-  repeated UserDto users = 1;
-  required int32 total = 2;
+message UserListResponse {
+  repeated UserResponse users = 1;
+  int32 total = 2;
 }
 
 message UserResponse {
-  UserDto result = 1;
-  ErrorResponse error = 2;
-}
-
-message ErrorResponse {
-  string message=1;
-  int32 errorCode=2;
-}
-
-message UserDto {
   string id = 1;
   string userName = 2;
   string password = 3;
-  optional string orgId = 4;
-  required ProfileDto profile=5;
-  repeated AddressDto addresses=6;
+  string orgId = 4;
+  UserProfile profile=5;
+  repeated UserAddress addresses=6;
+  int64 createdAt=7;
+  int64 updatedAt=8;
 }
 
-message CreateUserDto {
+message UserRequest {
   string userName = 1;
   string password = 2;
-  optional string orgId = 3;
-  required ProfileDto profile=4;
-  repeated AddressDto addresses=5;
+  string orgId = 3;
+  UserProfile profile=4;
+  repeated UserAddress addresses=5;
 }
 
-message AddressDto {
-  required string street=1;
-  required string ward=2;
-  required string district=3;
-  required string city=4;
-  required string state=5;
-  required string country=6;
+message UserAddress {
+  string street=1;
+  string ward=2;
+  string district=3;
+  string city=4;
+  string state=5;
+  string country=6;
 }
 
-message ProfileDto {
-  required string firstName=1;
-  required string lastName=2;
-  optional string phone=3;
-  optional string gender=4;
-  optional string photo=5;
-  optional int64 dateOfBirth=6;
+message UserProfile {
+  string firstName=1;
+  string lastName=2;
+  string phone=3;
+  string gender=4;
+  string photo=5;
+  int64 dateOfBirth=6;
 }
 
-message OperatorDto {
-  required CreateUserDto user=1;
+message OperatorRequest {
+  UserRequest user=1;
   repeated string orgsManagement=2;
 }

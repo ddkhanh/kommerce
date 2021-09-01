@@ -3,6 +3,7 @@ import { OrganizationService } from './organization.service';
 import { OrganizationController } from './organization.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Organization, OrganizationSchema } from './schema/organization.schema';
+import { OrganizationTransformer } from './transformer/organization.transformer';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { Organization, OrganizationSchema } from './schema/organization.schema';
     ])
   ],
   controllers: [OrganizationController],
-  providers: [OrganizationService]
+  providers: [OrganizationService, OrganizationTransformer],
+  exports: [OrganizationService]
 })
 export class OrganizationModule {}

@@ -1,10 +1,10 @@
 // Original file: src/protobuf/user.proto
 
 
-export interface UserId {
+export interface ObjectId {
   'id'?: (string);
 }
 
-export interface UserId__Output {
+export interface ObjectId__Output {
   'id'?: (string);
 }
