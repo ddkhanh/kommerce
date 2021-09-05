@@ -1,4 +1,5 @@
-// hero/hero.proto
+// After chaing this file, your have trigger code generation for this by issuing
+// yarn gen
 syntax = "proto3";
 
 package usermgmt;
@@ -9,6 +10,8 @@ service UserService {
   rpc updateUser (UserResponse) returns (UserResponse) {}
   rpc searchUsers (SearchRequest) returns (UserListResponse) {}
   rpc addUserToOrg (UserOrgRequest) returns (UserResponse) {}
+  /* Perform native login using user stroing in Database by given user and password */
+  rpc nativeLogin (LoginRequest) returns (UserResponse) {}
 }
 
 
@@ -17,6 +20,7 @@ service OrganizationService {
   rpc createOrg (OrganizationRequest) returns (OrganizationResponse) {}  
   rpc updateOrg (OrganizationResponse) returns (OrganizationResponse) {}
   rpc searchOrgs (SearchRequest) returns (OrganizatioListResponse) {}  
+  rpc setUpperOrg (UpperOrgRequest) returns (OrganizationResponse) {}
 }
 
 
@@ -44,6 +48,11 @@ message OrganizatioListResponse {
   int32 total = 2;
 }
 
+message UpperOrgRequest {
+  string orgId = 1;
+  string upperOrgId = 2;
+}
+
 message UserOrgRequest {
   string orgId = 1;
   string userId = 2;
@@ -52,17 +61,19 @@ message UserOrgRequest {
 message SearchCriteria {
   string name=1;
   string value = 2;
-  enum method {
-    eq = 0; //equals
-    gt = 1; //greater than
-    lt = 2; //less than
-    ne = 3; //not equals
-    in = 4; //in
-    sw = 5; //starts with
-    ew = 6; //ends with
-    ct = 7; //contains
-    regex = 8; // reqgular expression
-  }
+  CriteriaMethod md = 3;
+}
+
+enum CriteriaMethod {
+  eq = 0; //equals
+  gt = 1; //greater than
+  lt = 2; //less than
+  ne = 3; //not equals
+  in = 4; //in
+  sw = 5; //starts with
+  ew = 6; //ends with
+  ct = 7; //contains
+  regex = 8; // reqgular expression
 }
 
 message SearchRequest {
@@ -70,6 +81,13 @@ message SearchRequest {
   bool or = 2;
   int32 page = 3;
   int32 limit = 4;
+}
+
+/* LoginRequest to perform a native login using user storing in DB
+ * password must be in plaintext. */
+message LoginRequest {  
+  string userName = 1; // userName for searching in DB and must not be null
+  string password = 2; // password in plaintext format
 }
 
 message UserListResponse {

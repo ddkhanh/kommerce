@@ -1,10 +1,12 @@
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import * as bcrypt from 'bcrypt';
 import { Document } from 'mongoose';
 import { Address, AddressSchema } from "./address.schema";
 import { Organization } from "../../organization/schema/organization.schema";
 import { Profile, ProfileSchema } from "./profile.schema";
+const SALT_WORK_FACTOR = 10;
 
 @Schema({
     autoCreate: true,
@@ -37,5 +39,29 @@ export class User extends Document {
 
     /** To be injected by mongoose */
     updatedAt: Date;
+
+    /**
+     * Define this function for interacting with userSchema.
+     * @param candidatePassword - the raw password to be hashed and compare the one storing in DB
+     * @returns true|false - for the password matching
+     */
+    comparePassword: (candidatePassword: string) => boolean;
 }
-export const UserSchema = SchemaFactory.createForClass(User);
+const userSchema = SchemaFactory.createForClass(User);
+userSchema.pre('save', function (next: Function) {
+    let user = this;
+    if (!user.isModified('password')) {
+        return next();
+    }
+    // generate a salt
+    let salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
+    let hash = bcrypt.hashSync(user.password, salt);
+    user.password = hash;
+    return next();
+});
+/** This function has to match the one we declare above in User document*/
+userSchema.methods.comparePassword = function(candidatePassword) {
+    return bcrypt.compareSync(candidatePassword, this.password)
+};
+
+export const UserSchema = userSchema;

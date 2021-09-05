@@ -12,10 +12,11 @@
     "shared/*",
     "service/*",
     "api/*",
-    "web/*"   
+    "web/*"
   ],
   "dependencies": {
     "meow": "10.1.0",
-    "trim-newlines": "4.0.2"
+    "trim-newlines": "4.0.2",
+    "ts-proto": "^1.82.5"
   }
 }

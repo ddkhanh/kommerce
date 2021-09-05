@@ -1,6 +1,8 @@
-import { PROTOBUF_PATH } from '@kommerce/common';
 import { MongooseModuleOptions } from "@nestjs/mongoose";
+import { join } from "path";
 import { ApiOptions } from "./option/api.option";
+
+const PROTOBUF_PATH = join(__dirname, 'protobuf')
 
 const mongoUri = ():string => {
     //mongodb://username:password@host:port/database

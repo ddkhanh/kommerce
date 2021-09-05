@@ -2,8 +2,7 @@
   "npmClient": "yarn",
   "packages": [    
     "libs/*",
-    "services/*",
-    "frontends/*"
+    "services/*"    
   ],
   "useWorkspaces": true,
   "version": "1.0.0",

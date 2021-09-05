@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ObjectId, OrganizationRequest, OrganizationResponse} from '@kommerce/common';
-import { Transformer } from '../../../transformer/tranformer';
+import { ObjectId, OrganizationRequest, OrganizationResponse} from '../../../protobuf/user';
+import { Transformer } from '@kommerce/common';
 import { Organization } from '../schema/organization.schema';
 
 @Injectable()
@@ -18,6 +18,7 @@ export class OrganizationTransformer implements Transformer<Organization, Organi
             name: o.name,
             description: o.description,
             id: o._id.toString(),
+            uperOrgId: o.upperOrg?.id,
             updatedAt: o.updatedAt.getTime(),
             createdAt: o.createdAt.getTime()
         }

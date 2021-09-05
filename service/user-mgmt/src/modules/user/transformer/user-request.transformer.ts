@@ -1,6 +1,6 @@
-import { UserRequest, UserResponse } from '@kommerce/common';
+import { UserRequest, UserResponse } from '../../../protobuf/user';
 import { Injectable } from '@nestjs/common';
-import { Transformer } from '../../../transformer/tranformer';
+import { Transformer } from '@kommerce/common';
 import { User } from '../schema/user.schema';
 import { UserTransformer } from './user.transformer';
 
@@ -16,7 +16,6 @@ export class UserRequestTransformer implements Transformer<User, UserRequest>  {
     }
     to(u: User): UserRequest {
         let userRes = this.userTrans.to(u);
-        delete userRes.id
         return userRes as UserRequest;
     }
 }

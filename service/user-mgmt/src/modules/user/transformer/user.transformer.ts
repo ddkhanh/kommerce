@@ -1,6 +1,6 @@
-import { UserResponse } from '@kommerce/common';
+import { UserResponse } from '../../../protobuf/user';
 import { Injectable } from '@nestjs/common';
-import { Transformer } from '../../../transformer/tranformer';
+import { Transformer } from '@kommerce/common';
 import { User } from '../schema/user.schema';
 import { AddressTransformer } from './address.transformer';
 import { ProfileTransformer } from './profile.transformer';

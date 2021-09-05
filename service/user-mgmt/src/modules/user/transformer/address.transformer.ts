@@ -1,6 +1,6 @@
-import { UserAddress } from '@kommerce/common';
+import { UserAddress } from '../../../protobuf/user';
 import { Injectable } from '@nestjs/common';
-import { Transformer } from '../../../transformer/tranformer';
+import { Transformer } from '@kommerce/common';
 import { Address } from '../schema/address.schema';
 
 @Injectable()

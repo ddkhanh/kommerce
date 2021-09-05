@@ -17,7 +17,7 @@ export class Organization extends Document {
     description: string;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Organization.name })
-    uperOrg: Organization;
+    upperOrg: Organization;
 
     /** To be injected by mongoose */
     createdAt: Date;

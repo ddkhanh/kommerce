@@ -1,6 +1,6 @@
-import { UserProfile } from '@kommerce/common';
+import { UserProfile } from '../../../protobuf/user';
 import { Injectable } from '@nestjs/common';
-import { Transformer } from '../../../transformer/tranformer';
+import { Transformer } from '@kommerce/common';
 import { Profile } from '../schema/profile.schema';
 
 @Injectable()
