@@ -6,9 +6,12 @@ import { Observable } from 'rxjs';
 
 export const protobufPackage = 'usermgmt';
 
-/** hero/hero.proto */
+/**
+ * After chaing this file, your have trigger code generation for this by issuing
+ * yarn gen
+ */
 
-export enum Operator {
+export enum CriteriaMethod {
   /** eq - equals */
   eq = 0,
   /** gt - greater than */
@@ -67,7 +70,7 @@ export interface UserOrgRequest {
 export interface SearchCriteria {
   name: string;
   value: string;
-  operator: Operator;
+  md: CriteriaMethod;
 }
 
 export interface SearchRequest {
@@ -140,26 +143,22 @@ export const USERMGMT_PACKAGE_NAME = 'usermgmt';
 export interface UserServiceClient {
   findUserById(request: ObjectId): Observable<UserResponse>;
 
-  createUser(request: UserRequest): Observable<UserResponse>;
-
   updateUser(request: UserResponse): Observable<UserResponse>;
 
   searchUsers(request: SearchRequest): Observable<UserListResponse>;
 
   addUserToOrg(request: UserOrgRequest): Observable<UserResponse>;
 
-  /** Perform native login using user stroing in Database by given user and password */
+  signUp(request: UserRequest): Observable<UserResponse>;
 
-  nativeLogin(request: LoginRequest): Observable<UserResponse>;
+  /** Perform native login using user storing in Database by given user and password */
+
+  signIn(request: LoginRequest): Observable<UserResponse>;
 }
 
 export interface UserServiceController {
   findUserById(
     request: ObjectId,
-  ): Promise<UserResponse> | Observable<UserResponse> | UserResponse;
-
-  createUser(
-    request: UserRequest,
   ): Promise<UserResponse> | Observable<UserResponse> | UserResponse;
 
   updateUser(
@@ -177,9 +176,13 @@ export interface UserServiceController {
     request: UserOrgRequest,
   ): Promise<UserResponse> | Observable<UserResponse> | UserResponse;
 
-  /** Perform native login using user stroing in Database by given user and password */
+  signUp(
+    request: UserRequest,
+  ): Promise<UserResponse> | Observable<UserResponse> | UserResponse;
 
-  nativeLogin(
+  /** Perform native login using user storing in Database by given user and password */
+
+  signIn(
     request: LoginRequest,
   ): Promise<UserResponse> | Observable<UserResponse> | UserResponse;
 }
@@ -188,11 +191,11 @@ export function UserServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
       'findUserById',
-      'createUser',
       'updateUser',
       'searchUsers',
       'addUserToOrg',
-      'nativeLogin',
+      'signUp',
+      'signIn',
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(

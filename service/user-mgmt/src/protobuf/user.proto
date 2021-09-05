@@ -6,12 +6,12 @@ package usermgmt;
 
 service UserService {
   rpc findUserById (ObjectId) returns (UserResponse) {}    
-  rpc createUser (UserRequest) returns (UserResponse) {}  
   rpc updateUser (UserResponse) returns (UserResponse) {}
   rpc searchUsers (SearchRequest) returns (UserListResponse) {}
   rpc addUserToOrg (UserOrgRequest) returns (UserResponse) {}
-  /* Perform native login using user stroing in Database by given user and password */
-  rpc nativeLogin (LoginRequest) returns (UserResponse) {}
+  rpc signUp (UserRequest) returns (UserResponse) {}  
+  /* Perform native login using user storing in Database by given user and password */
+  rpc signIn (LoginRequest) returns (UserResponse) {}
 }
 
 
