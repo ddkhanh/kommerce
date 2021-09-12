@@ -4,7 +4,7 @@ import { Transformer } from '@kommerce/common';
 import { Profile } from '../schema/profile.schema';
 
 @Injectable()
-export class ProfileTransformer implements Transformer<Profile, UserProfile> {
+export class ProfileTransformer implements Transformer<UserProfile, UserProfile, Profile> {
     from(p: UserProfile): Profile {
         return <Profile> {
             lastName: p.lastName,

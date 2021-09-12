@@ -1,0 +1,9 @@
+// After chaing this file, your have trigger code generation for this by issuing
+// yarn gen
+syntax = "proto3";
+
+package inventory;
+
+message Asset {
+    string name = 1;
+}

@@ -1,4 +1,4 @@
-import { Document, FilterQuery, Model, ObjectId } from 'mongoose';
+import { FilterQuery, Model, ObjectId } from 'mongoose';
 
 export abstract class CrudService<T> {
     protected model: Model<T>;
@@ -13,15 +13,14 @@ export abstract class CrudService<T> {
         return inDb;
     }
     public async update(data: T): Promise<T | null> {
-        let update = data
-        
+        let update = data;
         let id = (<any>data).id;
         //Make sure we don't include indentifier in the update that mongose exception
         let saved = await this.model.findByIdAndUpdate(id, update as any, {new: true}).exec()
         return saved;
     }
-    public async delete(key: ObjectId | string): Promise<T> {
-        return this.model.remove({ id: key });
+    public async delete(key: ObjectId | string): Promise<T | null> {
+        return this.model.findByIdAndDelete(key, {}).exec();
     }
 
     public async findById(key: ObjectId | string): Promise<T | null> {

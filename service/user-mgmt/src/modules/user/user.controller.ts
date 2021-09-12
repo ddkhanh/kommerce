@@ -5,10 +5,8 @@ import * as Errors from '@kommerce/common';
 import { OrganizationService } from '../organization/organization.service';
 import { ValidationUtil } from '../../util/validation.util';
 import { User } from './schema/user.schema';
-import { UserRequestTransformer } from './transformer/user-request.transformer';
 import { UserTransformer } from './transformer/user.transformer';
 import { UsersService } from './user.service';
-import { Observable } from 'rxjs';
 
 @Controller()
 @UserServiceControllerMethods()
@@ -16,7 +14,6 @@ export class UserController implements UserServiceController{
   constructor(
     private readonly usersService: UsersService,
     private readonly userTrans: UserTransformer,
-    private readonly userRequestTrans: UserRequestTransformer,
     private readonly orgService: OrganizationService
   ) { }
 
@@ -46,7 +43,7 @@ export class UserController implements UserServiceController{
   }
 
   public async signUp(usr: UserRequest): Promise<UserResponse> {
-    let user: User = this.userRequestTrans.from(usr);
+    let user: User = this.userTrans.from(usr);
     let dbUser = await this.usersService.findByUserName(user.userName);
     if (dbUser) {      
       throw Errors.AlreadyExistsException(`The user ${user.userName} is already existed!`)
@@ -57,7 +54,7 @@ export class UserController implements UserServiceController{
 
 
   public async updateUser(usr: UserResponse): Promise<UserResponse> {
-    let user: User = this.userRequestTrans.from(usr);
+    let user: User = this.userTrans.from(usr);
     let created = await this.usersService.update(user);
     if (!created) {      
       throw Errors.NotFoundException(`User id ${user.id} is not existed`)

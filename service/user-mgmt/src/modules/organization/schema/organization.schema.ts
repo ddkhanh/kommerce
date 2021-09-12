@@ -2,6 +2,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { KommerceDocument } from '@kommerce/common';
 
 @Schema({
     autoCreate: true,
@@ -10,7 +11,7 @@ import * as mongoose from 'mongoose';
         currentTime: () => Math.floor(Date.now() / 1000)
     }
 })
-export class Organization extends Document {
+export class Organization extends KommerceDocument {
     @Prop()
     name: string;
     @Prop()
@@ -18,12 +19,8 @@ export class Organization extends Document {
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Organization.name })
     upperOrg: Organization;
-
-    /** To be injected by mongoose */
-    createdAt: Date;
-
-    /** To be injected by mongoose */
-    updatedAt: Date;
 }
+
+export type OrganizationDocument = Organization & Document;
 
 export const OrganizationSchema = SchemaFactory.createForClass(Organization);

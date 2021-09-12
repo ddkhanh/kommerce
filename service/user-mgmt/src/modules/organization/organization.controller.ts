@@ -9,14 +9,14 @@ import { OrganizationTransformer } from './transformer/organization.transformer'
 @OrganizationServiceControllerMethods()
 export class OrganizationController implements OrganizationServiceController {
   constructor(
-    private readonly orgService: OrganizationService,
+    private readonly orgSvc: OrganizationService,
     private readonly orgTrans: OrganizationTransformer) { }
 
   public async findOrgById(data: ObjectId): Promise<OrganizationResponse> {
     if (!ValidationUtil.isValidObjectId(data.id)) {
       throw Errors.InvalidIdException();
     }
-    let inDb = await this.orgService.findById(data.id);
+    let inDb = await this.orgSvc.findById(data.id);
     if (!inDb) {
       throw Errors.NotFoundException();
     }
@@ -24,12 +24,11 @@ export class OrganizationController implements OrganizationServiceController {
   }
 
   async createOrg(orgReq: OrganizationRequest): Promise<OrganizationResponse> {
-    let orgRes = orgReq as OrganizationResponse;
-    let org = this.orgTrans.from(orgRes);
+    let org = this.orgTrans.from(orgReq);
 
-    let orgDb = await this.orgService.findOrgByName(orgReq.name)
+    let orgDb = await this.orgSvc.findOrgByName(orgReq.name)
     if (!orgDb) {
-      let saved = await this.orgService.create(org);
+      let saved = await this.orgSvc.create(org);
       return this.orgTrans.to(saved);
     }
     throw Errors.AlreadyExistsException(`Organization ${orgReq.name} already existed`);
@@ -38,7 +37,7 @@ export class OrganizationController implements OrganizationServiceController {
   async updateOrg(orgRes: OrganizationResponse): Promise<OrganizationResponse> {
     let org = this.orgTrans.from(orgRes);
 
-    let orgDb = await this.orgService.update(org)
+    let orgDb = await this.orgSvc.update(org)
     if (!orgDb) {
       throw Errors.NotFoundException(`Organization ${org.name} do not existed`);
     }
@@ -51,18 +50,23 @@ export class OrganizationController implements OrganizationServiceController {
     }
     let org, upperOrg;
     //TODO: query these 2 orgs at one shoot
-    org = await this.orgService.findById(orgReq.orgId);
-    upperOrg = await this.orgService.findById(orgReq.upperOrgId);
+    org = await this.orgSvc.findById(orgReq.orgId);
+    upperOrg = await this.orgSvc.findById(orgReq.upperOrgId);
     if (org && upperOrg) {
       org.upperOrg = upperOrg;
-      org = await org.save();
+      org = await this.orgSvc.update(org)
+      
+    } else {
+        throw Errors.NotFoundException(`Org ${orgReq.orgId} or ${orgReq.upperOrgId} is not found`)
+    }
+    if(org) {
       return this.orgTrans.to(org);
     }
-    throw Errors.NotFoundException(`Org ${orgReq.orgId} or ${orgReq.upperOrgId} is not found`)
+    throw new Errors.KommerceException('Internal error, cannot persit data');
   }
 
   async searchOrgs(search: SearchRequest): Promise<OrganizatioListResponse> {
-    let orgs = await this.orgService.findAll();
+    let orgs = await this.orgSvc.findAll();
     return <OrganizatioListResponse>{
       orgs: orgs.map(o => this.orgTrans.to(o)),
       total: orgs.length

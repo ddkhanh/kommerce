@@ -1,4 +1,4 @@
-import { UserResponse } from '../../../protobuf/user';
+import { UserRequest, UserResponse } from '../../../protobuf/user';
 import { Injectable } from '@nestjs/common';
 import { Transformer } from '@kommerce/common';
 import { User } from '../schema/user.schema';
@@ -6,21 +6,17 @@ import { AddressTransformer } from './address.transformer';
 import { ProfileTransformer } from './profile.transformer';
 
 @Injectable()
-export class UserTransformer implements Transformer<User, UserResponse>  {
+export class UserTransformer implements Transformer<UserRequest, UserResponse, User>  {
     constructor(
         private readonly profileTrans: ProfileTransformer,
         private readonly addressTrans: AddressTransformer,
     ) {
     }
-    from(u: UserResponse): User {       
+    from(u: UserRequest): User {       
         let user = <User>{
             userName: u.userName,
             password: u.password,
-        }
-        if(u.id) {
-            user._id = u.id;
-            user.id = u.id;
-        }
+        }      
         if(u.orgId) {
             // userRespone.orgId = u.organization.id
         }
@@ -34,7 +30,7 @@ export class UserTransformer implements Transformer<User, UserResponse>  {
     }
     to(u: User): UserResponse {      
         let userRespone = <UserResponse>{
-            id: u._id.toString(),
+            id: u.id,
             userName: u.userName,
             password: u.password.replace(/./g, '*'),
             createdAt: u.createdAt.getTime(),
@@ -42,7 +38,7 @@ export class UserTransformer implements Transformer<User, UserResponse>  {
         };
         
         if(u.organization) {
-            userRespone.orgId = u.organization._id.toString()
+            userRespone.orgId = u.organization.id
         }
         if(u.profile) {
             userRespone.profile = this.profileTrans.to(u.profile)

@@ -1,23 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { ObjectId, OrganizationRequest, OrganizationResponse} from '../../../protobuf/user';
 import { Transformer } from '@kommerce/common';
+import { Injectable } from '@nestjs/common';
+import { OrganizationRequest, OrganizationResponse } from '../../../protobuf/user';
 import { Organization } from '../schema/organization.schema';
 
 @Injectable()
-export class OrganizationTransformer implements Transformer<Organization, OrganizationResponse>  {
-    from(o: OrganizationResponse): Organization {
-        return <Organization> {
+export class OrganizationTransformer implements Transformer<OrganizationRequest, OrganizationResponse, Organization>  {
+    from(o: OrganizationRequest): Organization {
+        return <Organization>{
             name: o.name,
             description: o.description,
-            _id: o.id,
-            id: o.id
         }
     }
     to(o: Organization): OrganizationResponse {
-        return <OrganizationResponse> {
+        return <OrganizationResponse>{
             name: o.name,
             description: o.description,
-            id: o._id.toString(),
+            id: o.id,
             uperOrgId: o.upperOrg?.id,
             updatedAt: o.updatedAt.getTime(),
             createdAt: o.createdAt.getTime()

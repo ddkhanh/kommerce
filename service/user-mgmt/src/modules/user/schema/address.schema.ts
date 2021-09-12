@@ -9,7 +9,7 @@ import { Document } from 'mongoose';
     }
 })
 
-export class Address extends Document{
+export class Address{
     @Prop()
     street: string;
 
@@ -28,5 +28,4 @@ export class Address extends Document{
     @Prop()
     country: string;
 }
-
 export const AddressSchema = SchemaFactory.createForClass(Address);

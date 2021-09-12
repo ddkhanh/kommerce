@@ -1,4 +1,5 @@
 
+import { KommerceDocument } from '@kommerce/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -15,7 +16,7 @@ export enum Gender {
         currentTime: () => Math.floor(Date.now() / 1000)
     }
 })
-export class Profile extends Document{
+export class Profile{
     
     @Prop()
     firstName: string;
