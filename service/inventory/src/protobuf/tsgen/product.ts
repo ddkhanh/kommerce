@@ -4,7 +4,8 @@ import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Observable } from 'rxjs';
 import { Asset } from './asset';
-import { Category } from './category';
+import { CategoryDto } from './category';
+import { ObjectId, SearchRequest } from './common';
 
 export const protobufPackage = 'inventory';
 
@@ -13,141 +14,99 @@ export const protobufPackage = 'inventory';
  * yarn gen
  */
 
-export enum CriteriaMethod {
-  /** eq - equals */
-  eq = 0,
-  /** gt - greater than */
-  gt = 1,
-  /** lt - less than */
-  lt = 2,
-  /** ne - not equals */
-  ne = 3,
-  /** in - in */
-  in = 4,
-  /** sw - starts with */
-  sw = 5,
-  /** ew - ends with */
-  ew = 6,
-  /** ct - contains */
-  ct = 7,
-  /** regex - reqgular expression */
-  regex = 8,
-  UNRECOGNIZED = -1,
-}
-
 export interface ProductRequest {
   name: string;
   description: string;
   qualityStock: number;
-  variants: ProductVariant[];
-  assets: Asset[];
-  categories: Category[];
+  variants: string[];
+  assets: string[];
+  categories: string[];
 }
 
-export interface ProductListResponse {
-  products: ProductResponse[];
+export interface ProductListDto {
+  products: ProductDto[];
   total: number;
 }
 
 export interface ProductVariant {}
 
-export interface ProductResponse {
+export interface ProductDto {
   id: string;
   name: string;
   description: string;
   qualityStock: number;
   variants: ProductVariant[];
   assets: Asset[];
-  categories: Category[];
+  categories: CategoryDto[];
 }
 
 export interface ProductVariantRequest {}
 
-export interface ProductVariantResponse {}
+export interface ProductVariantDto {}
 
 export interface ProductVariantList {
   variants: ProductVariantRequest[];
 }
 
-export interface ObjectId {
-  id: string;
-}
-
-export interface SearchCriteria {
-  name: string;
-  value: string;
-  md: CriteriaMethod;
-}
-
-export interface SearchRequest {
-  criterias: SearchCriteria[];
-  or: boolean;
-  page: number;
-  limit: number;
-}
-
 export const INVENTORY_PACKAGE_NAME = 'inventory';
 
 export interface ProductServiceClient {
-  createProduct(request: ProductRequest): Observable<ProductResponse>;
+  createProduct(request: ProductRequest): Observable<ProductDto>;
 
-  updateProduct(request: ProductRequest): Observable<ProductResponse>;
+  updateProduct(request: ProductDto): Observable<ProductDto>;
 
-  deleteProduct(request: ObjectId): Observable<ProductResponse>;
+  deleteProduct(request: ObjectId): Observable<ProductDto>;
 
-  search(request: SearchRequest): Observable<ProductListResponse>;
+  search(request: SearchRequest): Observable<ProductListDto>;
 
   createProductVariants(
     request: ProductVariantList,
-  ): Observable<ProductVariantResponse>;
+  ): Observable<ProductVariantDto>;
 
   updateProductVariants(
     request: ProductVariantList,
-  ): Observable<ProductVariantResponse>;
+  ): Observable<ProductVariantDto>;
 
-  deleteProductVariant(request: ObjectId): Observable<ProductVariantResponse>;
+  deleteProductVariant(request: ObjectId): Observable<ProductVariantDto>;
 }
 
 export interface ProductServiceController {
   createProduct(
     request: ProductRequest,
-  ): Promise<ProductResponse> | Observable<ProductResponse> | ProductResponse;
+  ): Promise<ProductDto> | Observable<ProductDto> | ProductDto;
 
   updateProduct(
-    request: ProductRequest,
-  ): Promise<ProductResponse> | Observable<ProductResponse> | ProductResponse;
+    request: ProductDto,
+  ): Promise<ProductDto> | Observable<ProductDto> | ProductDto;
 
   deleteProduct(
     request: ObjectId,
-  ): Promise<ProductResponse> | Observable<ProductResponse> | ProductResponse;
+  ): Promise<ProductDto> | Observable<ProductDto> | ProductDto;
 
   search(
     request: SearchRequest,
-  ):
-    | Promise<ProductListResponse>
-    | Observable<ProductListResponse>
-    | ProductListResponse;
+  ): Promise<ProductListDto> | Observable<ProductListDto> | ProductListDto;
 
   createProductVariants(
     request: ProductVariantList,
   ):
-    | Promise<ProductVariantResponse>
-    | Observable<ProductVariantResponse>
-    | ProductVariantResponse;
+    | Promise<ProductVariantDto>
+    | Observable<ProductVariantDto>
+    | ProductVariantDto;
 
   updateProductVariants(
     request: ProductVariantList,
   ):
-    | Promise<ProductVariantResponse>
-    | Observable<ProductVariantResponse>
-    | ProductVariantResponse;
+    | Promise<ProductVariantDto>
+    | Observable<ProductVariantDto>
+    | ProductVariantDto;
 
   deleteProductVariant(
     request: ObjectId,
   ):
-    | Promise<ProductVariantResponse>
-    | Observable<ProductVariantResponse>
-    | ProductVariantResponse;
+    | Promise<ProductVariantDto>
+    | Observable<ProductVariantDto>
+    | ProductVariantDto;
 }
 
 export function ProductServiceControllerMethods() {

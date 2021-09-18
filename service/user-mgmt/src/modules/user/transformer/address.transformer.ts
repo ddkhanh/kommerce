@@ -4,7 +4,7 @@ import { Transformer } from '@kommerce/common';
 import { Address } from '../schema/address.schema';
 
 @Injectable()
-export class AddressTransformer implements Transformer<Address, UserAddress>  {
+export class AddressTransformer implements Transformer<Address, UserAddress, Address>  {
     from(a: UserAddress): Address {
         return <Address> {
             city: a.city,
@@ -16,7 +16,7 @@ export class AddressTransformer implements Transformer<Address, UserAddress>  {
     }
     to(addr: Address): UserAddress {
         return <UserAddress> {
-            id: addr.id.toString(),
+            id: addr.id,
             city: addr.city,
             country: addr.city,
             district: addr.district,

@@ -1,3 +1,4 @@
+import { KommerceDocument } from '@kommerce/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -9,7 +10,7 @@ import { Document } from 'mongoose';
     }
 })
 
-export class Address{
+export class Address extends KommerceDocument{
     @Prop()
     street: string;
 
@@ -28,4 +29,5 @@ export class Address{
     @Prop()
     country: string;
 }
+export declare type AddressDocument = Address & Document;
 export const AddressSchema = SchemaFactory.createForClass(Address);

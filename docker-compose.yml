@@ -19,19 +19,19 @@ services:
             MONGO_INITDB_DATABASE: user
         ports: 
             - "27017:27017"
-    builder:
-        build: 
-            context: ./
-            dockerfile: Dockerfile
-    user-mgmt:
-        build: 
-            context: ./
-            dockerfile: ./service/user-mgmt/Dockerfile
-        links: 
-            - "mongo"
-        environment: 
-            DB_NAME: user
-            DB_PASSWORD: 123456
-            DB_USERNAME: root
-            DB_HOST: mongo
-            DB_PORT: 27017
+    # builder:
+    #     build: 
+    #         context: ./
+    #         dockerfile: Dockerfile
+    # user-mgmt:
+    #     build: 
+    #         context: ./
+    #         dockerfile: ./service/user-mgmt/Dockerfile
+    #     links: 
+    #         - "mongo"
+    #     environment: 
+    #         DB_NAME: user
+    #         DB_PASSWORD: 123456
+    #         DB_USERNAME: root
+    #         DB_HOST: mongo
+    #         DB_PORT: 27017

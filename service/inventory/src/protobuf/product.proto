@@ -2,32 +2,33 @@
 // yarn gen
 syntax = "proto3";
 
+import "common.proto";
 import "asset.proto";
 import "category.proto";
 package inventory;
 
 
 service ProductService {
-  rpc createProduct (ProductRequest) returns (ProductResponse) {};
-  rpc updateProduct (ProductRequest) returns (ProductResponse) {};
-  rpc deleteProduct (ObjectId) returns (ProductResponse) {};
-  rpc search (SearchRequest) returns (ProductListResponse) {};
-  rpc createProductVariants (ProductVariantList) returns (ProductVariantResponse) {};
-  rpc updateProductVariants (ProductVariantList) returns (ProductVariantResponse) {};
-  rpc deleteProductVariant (ObjectId) returns (ProductVariantResponse) {};
+  rpc createProduct (ProductRequest) returns (ProductDto) {};
+  rpc updateProduct (ProductDto) returns (ProductDto) {};
+  rpc deleteProduct (ObjectId) returns (ProductDto) {};
+  rpc search (SearchRequest) returns (ProductListDto) {};
+  rpc createProductVariants (ProductVariantList) returns (ProductVariantDto) {};
+  rpc updateProductVariants (ProductVariantList) returns (ProductVariantDto) {};
+  rpc deleteProductVariant (ObjectId) returns (ProductVariantDto) {};
 }
 
 message ProductRequest {
   string name = 1;
   string description = 2;
   int32 qualityStock = 3;
-  repeated ProductVariant variants = 4;
-  repeated Asset assets = 5;
-  repeated Category categories = 6;
+  repeated string variants = 4;
+  repeated string assets = 5;
+  repeated string categories = 6;
 }
 
-message ProductListResponse {
-  repeated ProductResponse products = 1;
+message ProductListDto {
+  repeated ProductDto products = 1;
   int32 total = 2;
 }
 
@@ -35,21 +36,21 @@ message ProductVariant {
 
 }
 
-message ProductResponse {
+message ProductDto {
   string id = 1;
   string name = 2;
   string description = 3;
   int32 qualityStock = 4;
   repeated ProductVariant variants = 5;
   repeated Asset assets = 6;
-  repeated Category categories = 7;
+  repeated CategoryDto categories = 7;
 }
 
 message ProductVariantRequest {
 
 }
 
-message ProductVariantResponse {
+message ProductVariantDto {
 
 }
 
@@ -57,31 +58,4 @@ message ProductVariantList {
   repeated ProductVariantRequest variants = 1;
 }
 
-message ObjectId {
-  string id = 1;
-}
 
-message SearchCriteria {
-  string name=1;
-  string value = 2;
-  CriteriaMethod md = 3;
-}
-
-enum CriteriaMethod {
-  eq = 0; //equals
-  gt = 1; //greater than
-  lt = 2; //less than
-  ne = 3; //not equals
-  in = 4; //in
-  sw = 5; //starts with
-  ew = 6; //ends with
-  ct = 7; //contains
-  regex = 8; // reqgular expression
-}
-
-message SearchRequest {
-  repeated SearchCriteria criterias=1;
-  bool or = 2;
-  int32 page = 3;
-  int32 limit = 4;
-}

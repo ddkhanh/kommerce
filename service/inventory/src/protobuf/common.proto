@@ -1,0 +1,35 @@
+// After chaing this file, your have trigger code generation for this by issuing
+// yarn gen
+syntax = "proto3";
+
+package inventory;
+
+
+message ObjectId {
+    string id = 1;
+}
+  
+message SearchCriteria {
+    string name=1;
+    string value = 2;
+    CriteriaMethod md = 3;
+}
+  
+enum CriteriaMethod {
+    eq = 0; //equals
+    gt = 1; //greater than
+    lt = 2; //less than
+    ne = 3; //not equals
+    in = 4; //in
+    sw = 5; //starts with
+    ew = 6; //ends with
+    ct = 7; //contains
+    regex = 8; // reqgular expression
+}
+
+message SearchRequest {
+    repeated SearchCriteria criterias=1;
+    bool or = 2;
+    int32 page = 3;
+    int32 limit = 4;
+}

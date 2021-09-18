@@ -36,3 +36,14 @@ export const NotFoundException = (err?: string) => new KommerceException({
     code: ErrorStatus.NOT_FOUND,
     message: err ? err : `Object is not found`
 });
+
+
+export const ValidationException = (err: string) => new KommerceException({
+    code: ErrorStatus.INVALID_ARGUMENT,
+    message: err
+});
+
+export const UnExpectedException = (err: string) => new KommerceException({
+    code: ErrorStatus.UNKNOWN,
+    message: err
+});
