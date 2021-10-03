@@ -3,9 +3,9 @@ import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Observable } from 'rxjs';
-import { Asset } from './asset';
+import { UpdateConditions, ObjectId, SearchRequest } from './common';
+import { AssetDto } from './asset';
 import { CategoryDto } from './category';
-import { ObjectId, SearchRequest } from './common';
 
 export const protobufPackage = 'inventory';
 
@@ -14,13 +14,18 @@ export const protobufPackage = 'inventory';
  * yarn gen
  */
 
-export interface ProductRequest {
+export interface CreateProductRequest {
   name: string;
   description: string;
   qualityStock: number;
-  variants: string[];
+  variants: ProductVariantDto[];
   assets: string[];
   categories: string[];
+}
+
+export interface UpdateProductRequest {
+  conditions: UpdateConditions | undefined;
+  data: CreateProductRequest | undefined;
 }
 
 export interface ProductListDto {
@@ -28,55 +33,76 @@ export interface ProductListDto {
   total: number;
 }
 
-export interface ProductVariant {}
+export interface ProductVariantDto {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  stockOnHand: number;
+  stockAllocated: number;
+  outOfStockThreshold: number;
+  options: ProductOptionDto[];
+  sku: string;
+  price: number;
+  assets: AssetDto[];
+  version: number;
+}
+
+export interface ProductVariantsRequest {
+  conditions: UpdateConditions | undefined;
+  variants: ProductVariantDto[];
+}
+
+export interface ProductVariantListDto {
+  variants: ProductVariantDto[];
+}
+
+export interface ProductOptionDto {
+  id: string;
+  name: string;
+  code: string;
+  description: string;
+}
 
 export interface ProductDto {
   id: string;
   name: string;
   description: string;
-  qualityStock: number;
-  variants: ProductVariant[];
-  assets: Asset[];
+  variants: ProductVariantDto[];
+  assets: AssetDto[];
   categories: CategoryDto[];
-}
-
-export interface ProductVariantRequest {}
-
-export interface ProductVariantDto {}
-
-export interface ProductVariantList {
-  variants: ProductVariantRequest[];
+  version: number;
 }
 
 export const INVENTORY_PACKAGE_NAME = 'inventory';
 
 export interface ProductServiceClient {
-  createProduct(request: ProductRequest): Observable<ProductDto>;
+  createProduct(request: CreateProductRequest): Observable<ProductDto>;
 
-  updateProduct(request: ProductDto): Observable<ProductDto>;
+  updateProduct(request: UpdateProductRequest): Observable<ProductDto>;
 
   deleteProduct(request: ObjectId): Observable<ProductDto>;
 
   search(request: SearchRequest): Observable<ProductListDto>;
 
   createProductVariants(
-    request: ProductVariantList,
-  ): Observable<ProductVariantDto>;
+    request: ProductVariantsRequest,
+  ): Observable<ProductVariantListDto>;
 
   updateProductVariants(
-    request: ProductVariantList,
-  ): Observable<ProductVariantDto>;
+    request: ProductVariantsRequest,
+  ): Observable<ProductVariantListDto>;
 
   deleteProductVariant(request: ObjectId): Observable<ProductVariantDto>;
 }
 
 export interface ProductServiceController {
   createProduct(
-    request: ProductRequest,
+    request: CreateProductRequest,
   ): Promise<ProductDto> | Observable<ProductDto> | ProductDto;
 
   updateProduct(
-    request: ProductDto,
+    request: UpdateProductRequest,
   ): Promise<ProductDto> | Observable<ProductDto> | ProductDto;
 
   deleteProduct(
@@ -88,18 +114,18 @@ export interface ProductServiceController {
   ): Promise<ProductListDto> | Observable<ProductListDto> | ProductListDto;
 
   createProductVariants(
-    request: ProductVariantList,
+    request: ProductVariantsRequest,
   ):
-    | Promise<ProductVariantDto>
-    | Observable<ProductVariantDto>
-    | ProductVariantDto;
+    | Promise<ProductVariantListDto>
+    | Observable<ProductVariantListDto>
+    | ProductVariantListDto;
 
   updateProductVariants(
-    request: ProductVariantList,
+    request: ProductVariantsRequest,
   ):
-    | Promise<ProductVariantDto>
-    | Observable<ProductVariantDto>
-    | ProductVariantDto;
+    | Promise<ProductVariantListDto>
+    | Observable<ProductVariantListDto>
+    | ProductVariantListDto;
 
   deleteProductVariant(
     request: ObjectId,

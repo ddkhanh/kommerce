@@ -9,22 +9,27 @@ package inventory;
 
 
 service ProductService {
-  rpc createProduct (ProductRequest) returns (ProductDto) {};
-  rpc updateProduct (ProductDto) returns (ProductDto) {};
+  rpc createProduct (CreateProductRequest) returns (ProductDto) {};
+  rpc updateProduct (UpdateProductRequest) returns (ProductDto) {};
   rpc deleteProduct (ObjectId) returns (ProductDto) {};
   rpc search (SearchRequest) returns (ProductListDto) {};
-  rpc createProductVariants (ProductVariantList) returns (ProductVariantDto) {};
-  rpc updateProductVariants (ProductVariantList) returns (ProductVariantDto) {};
+  rpc createProductVariants (ProductVariantsRequest) returns (ProductVariantListDto) {};
+  rpc updateProductVariants (ProductVariantsRequest) returns (ProductVariantListDto) {};
   rpc deleteProductVariant (ObjectId) returns (ProductVariantDto) {};
 }
 
-message ProductRequest {
+message CreateProductRequest {
   string name = 1;
   string description = 2;
   int32 qualityStock = 3;
-  repeated string variants = 4;
+  repeated ProductVariantDto variants = 4;
   repeated string assets = 5;
   repeated string categories = 6;
+}
+
+message UpdateProductRequest {
+  UpdateConditions conditions=1;
+  CreateProductRequest data=2;
 }
 
 message ProductListDto {
@@ -32,30 +37,45 @@ message ProductListDto {
   int32 total = 2;
 }
 
-message ProductVariant {
+message ProductVariantDto {
+  string id=1;
+  string name=2;
+  string description = 3;
+  bool enabled = 4;
+  int32 stockOnHand = 5;
+  int32 stockAllocated = 6;
+  int32 outOfStockThreshold = 7;
+  repeated ProductOptionDto options = 8;
+  string sku = 9;
+  float price = 10;
+  repeated AssetDto assets=11;
+  int32 version = 12;
+}
 
+message ProductVariantsRequest {
+  UpdateConditions conditions=1;
+  repeated ProductVariantDto variants=2;  
+}
+
+message ProductVariantListDto {
+  repeated ProductVariantDto variants=1;
+}
+
+message ProductOptionDto {
+  string id = 1;
+  string name = 2;
+  string code = 3;
+  string description = 4;
 }
 
 message ProductDto {
   string id = 1;
   string name = 2;
-  string description = 3;
-  int32 qualityStock = 4;
-  repeated ProductVariant variants = 5;
-  repeated Asset assets = 6;
-  repeated CategoryDto categories = 7;
-}
-
-message ProductVariantRequest {
-
-}
-
-message ProductVariantDto {
-
-}
-
-message ProductVariantList {
-  repeated ProductVariantRequest variants = 1;
+  string description = 3;  
+  repeated ProductVariantDto variants = 4;
+  repeated AssetDto assets = 5;
+  repeated CategoryDto categories = 6;
+  int32 version = 7;
 }
 
 

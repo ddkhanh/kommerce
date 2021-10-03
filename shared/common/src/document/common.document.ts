@@ -7,4 +7,7 @@ export class KommerceDocument{
 
     /** To be injected by mongoose */
     updatedAt: Date;
+
+    /** To be injected by mongoose */
+    __v: number;
 }

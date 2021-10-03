@@ -4,32 +4,33 @@ import { Asset } from '../../asset/schema/asset.schema';
 import { Category } from '../../category/schema/category.schema';
 import { ProductVariant, ProductVariantSchema } from './product-variant.schema';
 import * as mongoose from 'mongoose';
-import { KommerceDocument } from '@kommerce/common';
+import { KommerceSchema } from '../../../schema/common.schema';
 
 @Schema({
-    autoCreate: true,
     collection: Product.name,
+    autoCreate: true,
     timestamps: {
         currentTime: () => Math.floor(Date.now() / 1000)
-    }
+    },
+    versionKey: "version"
 })
-export class Product extends KommerceDocument{
-    @Prop()
+export class Product extends KommerceSchema{
+    @Prop({index: true})
     name: string;
     @Prop()
     description: string;
+    
+    @Prop({index: true})
+    slug: string;
 
-    @Prop()
-    qualityStock: number;
-
-    @Prop({ type: [{ type: ProductVariantSchema }] })
+    @Prop({ type: [{type: ProductVariantSchema}]})
     variants: ProductVariant[];
 
     @Prop({ type: [{type: mongoose.Schema.Types.ObjectId, ref: Asset.name }]})
     assets: Asset[];
 
     @Prop({ type: [{type: mongoose.Schema.Types.ObjectId, ref: Category.name }]})
-    categories: Category[];
+    categories: Category[] = [];
 
 }
 

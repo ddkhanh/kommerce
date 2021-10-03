@@ -2,10 +2,11 @@ import { NotFoundException, UnExpectedException } from "@kommerce/common";
 import { Body, Controller } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { JoiValidationPipe } from "../../pipe/joi.pipe";
-import { CategoryDto, CategoryListDto, CategoryRequest, CategoryServiceController, CategoryServiceControllerMethods } from "../../protobuf/tsgen/category";
-import { ObjectId, SearchRequest } from "../../protobuf/tsgen/common";
+import { CategoryDto, CategoryListDto, CategoryRequest, CategoryServiceController, CategoryServiceControllerMethods } from "../../grpc/category";
+import { ObjectId, SearchRequest } from "../../grpc/common";
 import { UpdateProductValidator } from "../product/validator/product.validator";
 import { CategoryService } from "./category.service";
+import { Category } from "./schema/category.schema";
 import { CategoryTransformer } from "./transformer/category.transformer";
 import { CreateCategoryValidator, MongoIdValidator, SearchRequestValidator } from "./validator/category.validator";
 

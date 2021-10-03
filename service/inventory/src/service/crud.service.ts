@@ -1,6 +1,7 @@
 import { FilterQuery, Model, ObjectId } from 'mongoose';
+import { KommerceSchema } from '../schema/common.schema';
 
-export abstract class CrudService<T> {
+export abstract class CrudService<T extends KommerceSchema> {
     protected model: Model<T>;
 
     protected constructor(model: Model<T>) {
@@ -13,10 +14,15 @@ export abstract class CrudService<T> {
         return inDb;
     }
     public async update(data: T): Promise<T | null> {
-        let update = data;
-        let id = (<any>data).id;
-        //Make sure we don't include indentifier in the update that mongose exception
-        let saved = await this.model.findByIdAndUpdate(id, update as any, {new: true}).exec()
+        let doc = data;
+        //Make sure we alway update the latest data, otherwise it should end up the error of null result
+        let filters = <FilterQuery<T>>{_id: doc.id, version: doc.version};
+        doc.version++; 
+        const updateOption = {
+            new: true,
+        };
+        let saved  = await this.model.findOneAndUpdate(filters, [{$set: doc}],  updateOption).exec();
+        // let saved = await this.model.findByIdAndUpdate(id, update as any, {new: true}).exec()
         return saved;
     }
     public async delete(key: ObjectId | string): Promise<T | null> {

@@ -10,7 +10,7 @@ const mongoUri = ():string => {
     let password = encodeURI(process.env.DB_PASSWORD || '123456')
     let dbHost = process.env.DB_HOST || 'localhost'
     let dbPort = process.env.DB_PORT || '27017'
-    let dbName = process.env.DB_NAME || 'user'
+    let dbName = process.env.DB_NAME || 'inventory'
     let uri = `mongodb://${username}:${password}@${dbHost}:${dbPort}/${dbName}`;
     console.log("MongoUri", uri);
     return uri;

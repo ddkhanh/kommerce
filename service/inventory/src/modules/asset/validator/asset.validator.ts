@@ -2,8 +2,8 @@ import * as Joi from 'joi';
 import { UpdateConditionsValidator, mongoId } from '../../../validator/common.validator';
 
 
-/** Validate CreateProduct request, in here it don't required id */
-export const CreateProductValidator = Joi.object({
+/** Validate CreateAsset request, in here it don't required id */
+export const CreateAssetValidator = Joi.object({
     name: Joi.string().min(3).required(),
     description: Joi.string(),
     qualityStock: Joi.number().positive(),
@@ -13,15 +13,7 @@ export const CreateProductValidator = Joi.object({
 })
 
 /** The update product request have the same with create except it require 1 more id field for the query */
-export const UpdateProductValidator = Joi.object({
+export const UpdateAssetValidator = Joi.object({
     conditions: UpdateConditionsValidator.required(),
-    data: CreateProductValidator.required()
+    data: CreateAssetValidator.required()
 })
-
-export const ProductVariantValidator = Joi.object({
-    name: Joi.string().min(3).required(),
-    description: Joi.string(),
-    sku: Joi.string().min(3).required(),
-    price: Joi.number().min(0),
-    assets: Joi.array().items(mongoId),
-});

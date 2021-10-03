@@ -2,15 +2,17 @@
 import { KommerceDocument } from '@kommerce/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { KommerceSchema } from '../../../schema/common.schema';
 
 @Schema({
-    autoCreate: true,
     collection: Category.name,
+    autoCreate: true,
     timestamps: {
         currentTime: () => Math.floor(Date.now() / 1000)
-    }
+    },
+    versionKey: "version"
 })
-export class Category extends KommerceDocument {
+export class Category extends KommerceSchema {
     @Prop()
     name: string;
     @Prop()

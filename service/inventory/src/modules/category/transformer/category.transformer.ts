@@ -1,6 +1,6 @@
 import { Transformer } from '@kommerce/common';
 import { Injectable } from '@nestjs/common';
-import { CategoryDto, CategoryRequest } from '../../../protobuf/tsgen/category';
+import { CategoryDto, CategoryRequest } from '../../../grpc/category';
 import { Category } from '../schema/category.schema';
 
 @Injectable()

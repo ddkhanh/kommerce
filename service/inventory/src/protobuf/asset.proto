@@ -1,9 +1,54 @@
 // After chaing this file, your have trigger code generation for this by issuing
 // yarn gen
 syntax = "proto3";
+import "common.proto";
 
 package inventory;
 
-message Asset {
+service AssetService {
+    rpc createAsset (CreateAssetRequest) returns (AssetDto) {};
+    rpc updateAsset (UpdateAssetRequest) returns (AssetDto) {};
+    rpc deleteAsset (ObjectId) returns (AssetDto) {};
+    rpc search (SearchRequest) returns (AssetListDto) {};
+  }
+message CreateAssetRequest {
     string name = 1;
+    AssetType type = 2;
+    int32 fileSize = 3;
+    string mimeType = 4;
+    int32 width = 5;
+    int32 height = 6;
+    string source = 7;
+    string preview = 8;    
+    string description = 9;
+}
+
+message UpdateAssetRequest {
+    UpdateConditions conditions = 1;
+    CreateAssetRequest data = 2;
+}
+
+message AssetDto {
+    string name = 1;
+    AssetType type = 2;
+    int32 fileSize = 3;
+    string mimeType = 4;
+    int32 width = 5;
+    int32 height = 6;
+    string source = 7;
+    string preview = 8;
+    string id = 9;
+    int64 version = 10;
+    string description = 11;
+}
+
+message AssetListDto {
+    repeated AssetDto assets = 1;
+    int32 total = 2;
+}
+
+enum AssetType {
+    IMAGE = 0;
+    VIDEO = 1;
+    BINARY = 2;
 }

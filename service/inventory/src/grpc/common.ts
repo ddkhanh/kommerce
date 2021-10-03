@@ -48,6 +48,11 @@ export interface SearchRequest {
   limit: number;
 }
 
+export interface UpdateConditions {
+  id: string;
+  version: number;
+}
+
 export const INVENTORY_PACKAGE_NAME = 'inventory';
 
 if (_m0.util.Long !== Long) {
